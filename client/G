@@ -1,0 +1,1 @@
+gcc client.c ../common/udp_client.c ../common/common.c ../common/data.c ../common/client_recv.c ../common/send_chat.c ../common/chat_ui.c -I ../common/ -std=gnu99 -pthread -lncursesw
