@@ -19,6 +19,15 @@ int port = 0;
 pthread_mutex_t rmutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t bmutex = PTHREAD_MUTEX_INITIALIZER;
 
+void logout_s(int signum) {
+    struct ChatMsg msg;
+    bzero(&msg, sizeof(msg));
+    msg.type = CHAT_SYS;
+    sprintf(msg.msg, "DOWN!");
+    send_all(&msg);
+    exit(0);
+}
+
 int main(int argc, char **argv) {
     int opt, listener, epollfd;
     pthread_t red_t, blue_t;
@@ -89,6 +98,8 @@ int main(int argc, char **argv) {
     struct sockaddr_in client;
     bzero(&client, sizeof(client));
     socklen_t len = sizeof(client);
+
+    signal(SIGINT, logout_s);
 
     while (1) {
         DBG(YELLOW"Main Reactor"NONE" : Waiting for client.\n");
